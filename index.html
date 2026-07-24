@@ -1,0 +1,2293 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#F8FAFC]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dual-Role Pronunciation Lab</title>
+  
+  <!-- Tailwind CSS for high-fidelity styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f5f7ff',
+              100: '#ebf0ff',
+              500: '#7C3AED', /* Rich Violet matching theme */
+              600: '#6D28D9',
+              700: '#4F46E5', /* Deep Indigo */
+            }
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    /* Custom styling for correct and missing words matching screen capture theme */
+    .word-correct {
+      color: #065F46; /* Emerald green */
+      font-weight: 700;
+      background-color: #ECFDF5;
+      padding: 0.35rem 0.65rem;
+      border-radius: 0.5rem;
+      border-bottom: 3px solid #A7F3D0;
+      display: inline-block;
+      margin: 0.2rem;
+    }
+    .word-missing {
+      color: #991B1B; /* Bright Red */
+      text-decoration: line-through;
+      background-color: #FEF2F2;
+      padding: 0.35rem 0.65rem;
+      border-radius: 0.5rem;
+      border-bottom: 3px dashed #FECACA;
+      display: inline-block;
+      margin: 0.2rem;
+      opacity: 0.8;
+    }
+    
+    /* Elegant Crimson Pulsing Recording Ring */
+    @keyframes pulse-ring {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.25); }
+    }
+    .recording-dot {
+      animation: pulse-ring 1.4s infinite ease-in-out;
+    }
+
+    /* Bulletproof clickability of all buttons having nested SVGs or spans */
+    button * {
+      pointer-events: none !important;
+    }
+ 
+    /* Custom smooth scrolling and mobile scrollbar aesthetics */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(238, 242, 255, 0.5);
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #C7D2FE;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #818CF8;
+    }
+  </style>
+</head>
+<body class="h-full text-slate-800 flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- ================= PAGE 1: IMMERSIVE WELCOME VIEW (WITH MOBILE SCROLLING) ================= -->
+  <div id="welcome-view" class="min-h-screen w-full flex flex-col justify-between bg-gradient-to-b from-[#EEF2FF] via-[#FAF5FF] to-white text-slate-900 p-4 sm:p-8 lg:p-12 relative overflow-y-auto overflow-x-hidden custom-scrollbar">
+    <!-- Fine ambient radial details -->
+    <div class="absolute w-[500px] h-[500px] rounded-full bg-indigo-200/20 blur-3xl -top-24 -left-24 pointer-events-none z-[-10]"></div>
+    <div class="absolute w-[500px] h-[500px] rounded-full bg-purple-200/20 blur-3xl -bottom-24 -right-24 pointer-events-none z-[-10]"></div>
+
+    <!-- Header info navigation bar -->
+    <header class="flex items-center justify-between w-full max-w-5xl mx-auto z-10 pb-6">
+      <div class="flex items-center gap-3">
+        <div class="p-2.5 bg-indigo-600/10 text-indigo-600 rounded-2xl">
+          <svg class="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+          </svg>
+        </div>
+        <span class="text-lg sm:text-xl font-black tracking-tight text-slate-900 font-sans">Dual-Role Pronunciation Lab</span>
+      </div>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-1.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/60 shadow-sm">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Native Engine + Gemini AI
+      </span>
+    </header>
+
+    <!-- Main Dashboard Entry Hero -->
+    <main class="w-full max-w-4xl mx-auto z-10 py-6 sm:py-10 flex flex-col items-center text-center space-y-8">
+      
+      <!-- Copy Details -->
+      <div class="space-y-6 max-w-3xl">
+        <div>
+          <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-indigo-100/60 text-indigo-700 border border-indigo-200">
+            <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+            <span>AI-Powered Pronunciation Analysis</span>
+          </span>
+        </div>
+        <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-tight sm:leading-none text-slate-900">
+          Master Conversations <br class="hidden sm:inline">
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600">Through Practice</span>
+        </h1>
+        <p class="text-base sm:text-xl text-slate-600 font-normal leading-relaxed max-w-2xl mx-auto">
+          Upload your conversation scripts, record your practice sessions, and get instant AI feedback on your pronunciation accuracy with standard UK phonetic matching.
+        </p>
+      </div>
+
+      <!-- Interactive Microphone Activator Station -->
+      <div class="w-full bg-white border-2 border-indigo-100/80 rounded-3xl p-5 sm:p-8 shadow-xl shadow-indigo-100/30 space-y-5 text-left max-w-2xl">
+        <div class="flex items-center justify-between gap-4 flex-wrap">
+          <div class="flex items-center gap-3">
+            <div id="mic-indicator-circle" class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center transition-transform duration-75 shrink-0">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 10v1a7 7 0 01-14 0v-1M12 19v4M8 23h8"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-slate-900 text-base">Audio Hardware Check</h3>
+              <p class="text-xs text-slate-500">Test and activate your microphone before entering the dialogue console.</p>
+            </div>
+          </div>
+          <span id="mic-status-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-500 border border-slate-200">Awaiting Testing</span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+          <button id="btn-activate-mic" onclick="activateMicTest()" class="relative z-50 cursor-pointer py-3.5 px-6 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-sm rounded-xl border border-indigo-200 transition duration-150 flex items-center justify-center gap-2" style="cursor: pointer !important;">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/>
+            </svg>
+            <span>Test Microphone</span>
+          </button>
+          <div class="flex-grow bg-slate-100 rounded-full h-3 overflow-hidden relative self-center w-full">
+            <div id="mic-meter-bar" class="bg-emerald-500 h-full w-0 transition-all duration-75"></div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3.5 border-t border-slate-100">
+          <label class="relative inline-flex items-center cursor-pointer select-none" style="cursor: pointer !important;">
+            <input type="checkbox" id="toggle-mic-loopback" onchange="toggleLoopbackState()" class="sr-only peer">
+            <div class="w-10 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+            <span class="ml-2.5 text-xs font-bold text-slate-700">Hear myself (Live Monitor)</span>
+          </label>
+          <span class="text-[11px] text-amber-600 font-bold flex items-center gap-1 bg-amber-50/70 border border-amber-100/60 px-3 py-1.5 rounded-lg">
+            <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <span>Use headphones to prevent echo feedback!</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Start Practice CTA -->
+      <div class="pt-4 flex flex-col items-center w-full max-w-2xl">
+        <button id="btn-start-lab" disabled onclick="enterPracticeLab()" class="py-4 sm:py-5 px-10 sm:px-12 bg-gradient-to-r from-violet-400 to-indigo-400 text-white font-extrabold text-lg sm:text-xl rounded-2xl shadow-xl transform hover:-translate-y-1 transition duration-150 flex items-center justify-center gap-3 w-full sm:w-auto relative z-50 opacity-60 cursor-not-allowed" style="cursor: pointer !important;">
+          <span>Start New Conversation</span>
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </button>
+      </div>
+    </main>
+
+    <footer class="text-center text-xs text-slate-400 w-full max-w-5xl mx-auto z-10 border-t border-slate-100 pt-6 mt-8">
+      Browser-Native Dialogue Alignment Lab Platform &copy; 2026. Custom turn-isolated audio processing engine.
+    </footer>
+  </div>
+
+
+  <!-- ================= PAGE 2: DIALOGUE CONSOLE VIEW ================= -->
+  <div id="lab-workspace-view" class="hidden min-h-screen flex flex-col justify-between bg-gradient-to-b from-[#EEF2FF] via-[#FAF5FF] to-white">
+    
+    <!-- Workspace control navigation bar -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-indigo-50 py-5 px-6 sticky top-0 z-[100] relative">
+      <div class="max-w-[1600px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+          <button onclick="exitToWelcome()" class="relative z-[150] cursor-pointer py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-bold transition flex items-center gap-1.5" style="cursor: pointer !important;" title="Exit workspace">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            <span>Home</span>
+          </button>
+          <div class="text-right sm:text-left">
+            <h1 class="text-lg font-black text-slate-900 tracking-tight">Dialogue Practice Console</h1>
+            <p class="text-[11px] text-slate-500 font-semibold uppercase tracking-wider">Pronunciation Lab</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-3">
+          <span id="cloud-indicator" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span> Connecting Cloud Sync...
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main workspace content area -->
+    <main class="flex-grow max-w-[1600px] w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-8">
+
+      <!-- Action Notices & Warning Elements -->
+      <div id="browser-warning" class="hidden bg-amber-50 border border-amber-200 p-4 rounded-2xl flex items-start gap-3 shadow-sm">
+        <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+        </svg>
+        <div>
+          <h4 class="font-bold text-amber-950 text-sm">Speech Engine Warning</h4>
+          <p class="text-xs text-amber-700 mt-1 leading-relaxed">
+            Your current browser configuration does not natively support continuous speech recognition APIs. We recommend using Google Chrome or Microsoft Edge.
+          </p>
+        </div>
+      </div>
+
+      <!-- Hero Header & KPI Cards Section for Page 2 -->
+      <section class="space-y-6">
+        <div class="text-center max-w-4xl mx-auto space-y-4">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-100/60 text-indigo-700 border border-indigo-200">
+            ✨ Immersive Learning Environment
+          </span>
+          <h2 class="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight">
+            Dialogue Practice Console
+          </h2>
+          <p class="text-slate-600 text-lg sm:text-xl">
+            Manage your conversational exercises below. Create custom AI prompts, complete your practice recordings, and generate deep phonetic evaluation metrics.
+          </p>
+        </div>
+
+        <!-- Metric KPI Cards with maximum structural expansion -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-[1600px] mx-auto">
+          <div class="bg-white rounded-3xl p-6 border border-indigo-50 shadow-xl shadow-indigo-100/30 flex gap-4 items-center">
+            <div class="p-4 bg-violet-100 text-violet-600 rounded-2xl shrink-0 font-bold text-xl">
+              <svg class="w-7 h-7 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              </svg>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400">Total Turns</h5>
+              <p class="text-3xl font-black text-slate-900">6 Active Drills</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-3xl p-6 border border-indigo-50 shadow-xl shadow-indigo-100/30 flex gap-4 items-center">
+            <div class="p-4 bg-indigo-100 text-indigo-600 rounded-2xl shrink-0 font-bold text-xl">
+              <svg class="w-7 h-7 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/>
+              </svg>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400">Audio Records</h5>
+              <p id="workspace-records-count" class="text-3xl font-black text-slate-900">0 of 12 clips</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-3xl p-6 border border-indigo-50 shadow-xl shadow-indigo-100/30 flex gap-4 items-center">
+            <div class="p-4 bg-emerald-100 text-emerald-600 rounded-2xl shrink-0 font-bold text-xl">
+              <svg class="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"/>
+              </svg>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400">Engine Accuracy</h5>
+              <p id="workspace-analytics-status" class="text-3xl font-black text-slate-900">Unexamined</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Gemini AI Dialogue Creator -->
+      <section class="bg-white border border-indigo-100/60 rounded-3xl p-6 sm:p-8 shadow-xl shadow-indigo-100/30 flex flex-col gap-5 relative overflow-hidden max-w-[1600px] w-full mx-auto">
+        <!-- Decorator ring -->
+        <div class="absolute w-64 h-64 rounded-full bg-violet-100/30 blur-2xl -right-12 -top-12 pointer-events-none z-[-10]"></div>
+        <div class="flex items-center gap-4 z-10">
+          <div class="p-3 bg-gradient-to-r from-violet-600 to-indigo-600 text-white rounded-2xl text-xl font-bold">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 font-sans">Gemini AI Scenario Generator</h2>
+            <p class="text-sm sm:text-base text-slate-500 font-medium">Provide a theme to auto-generate a structured 6-turn script mapping for both speakers.</p>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3.5 z-10">
+          <input id="ai-prompt-input" type="text" class="flex-grow bg-[#F8FAFC] border border-indigo-100/80 rounded-2xl px-6 py-5 text-base sm:text-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition" placeholder="e.g. Inquiring about standard boarding passes at Heathrow departure desk...">
+          <button id="btn-generate-ai" onclick="generateAIScript()" class="relative z-50 cursor-pointer py-5 px-8 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 active:from-violet-700 active:to-indigo-700 text-white text-base font-bold rounded-2xl shadow-md shadow-indigo-500/10 hover:shadow-indigo-500/20 active:scale-[0.98] transition flex items-center justify-center gap-2.5" style="cursor: pointer !important;">
+            <span id="ai-btn-text">Generate Dialogue Script</span>
+            <div id="ai-btn-spinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Interactive Step Progress Timeline Tracker -->
+      <section class="bg-white/60 border border-indigo-50 rounded-2xl p-4 shadow-sm flex flex-wrap items-center justify-center gap-4 sm:gap-8 max-w-[1600px] w-full mx-auto">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Progress:</span>
+        <div class="flex items-center gap-4 flex-wrap justify-center">
+          <div id="step-marker-1" class="flex items-center gap-1 text-xs font-semibold text-slate-400 transition-colors"><span class="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-500 font-bold">1</span><span>Turn 1</span></div>
+          <div class="h-px w-4 bg-slate-200 hidden sm:block"></div>
+          <div id="step-marker-2" class="flex items-center gap-1 text-xs font-semibold text-slate-400 transition-colors"><span class="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-500 font-bold">2</span><span>Turn 2</span></div>
+          <div class="h-px w-4 bg-slate-200 hidden sm:block"></div>
+          <div id="step-marker-3" class="flex items-center gap-1 text-xs font-semibold text-slate-400 transition-colors"><span class="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-500 font-bold">3</span><span>Turn 3</span></div>
+          <div class="h-px w-4 bg-slate-200 hidden sm:block"></div>
+          <div id="step-marker-4" class="flex items-center gap-1 text-xs font-semibold text-slate-400 transition-colors"><span class="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-500 font-bold">4</span><span>Turn 4</span></div>
+          <div class="h-px w-4 bg-slate-200 hidden sm:block"></div>
+          <div id="step-marker-5" class="flex items-center gap-1 text-xs font-semibold text-slate-400 transition-colors"><span class="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-500 font-bold">5</span><span>Turn 5</span></div>
+          <div class="h-px w-4 bg-slate-200 hidden sm:block"></div>
+          <div id="step-marker-6" class="flex items-center gap-1 text-xs font-semibold text-slate-400 transition-colors"><span class="w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-500 font-bold">6</span><span>Turn 6</span></div>
+        </div>
+      </section>
+
+      <!-- Active Recording Status Bar -->
+      <div id="global-recording-bar" class="hidden bg-rose-50 border border-rose-100 p-4 rounded-2xl items-center justify-between shadow-md max-w-[1600px] w-full mx-auto">
+        <div class="flex items-center gap-3">
+          <span class="w-3.5 h-3.5 rounded-full bg-rose-600 recording-dot"></span>
+          <span id="global-recording-text" class="text-sm font-bold text-rose-800 tracking-wide uppercase">Active microphone stream...</span>
+        </div>
+        <button onclick="stopGlobalSession()" class="relative z-50 cursor-pointer py-2 px-5 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white rounded-xl text-xs font-bold transition duration-150 flex items-center gap-1.5" style="cursor: pointer !important;">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2" fill="none" />
+          </svg>
+          <span>Halt Recording</span>
+        </button>
+      </div>
+
+      <!-- Dynamic Speaking Workspace Console Grid -->
+      <section class="flex flex-col gap-6 print-full-width max-w-[1600px] w-full mx-auto">
+        <div class="flex items-center justify-between border-b border-indigo-100 pb-3">
+          <div>
+            <h3 class="text-2xl font-black text-slate-900 font-sans">Turn Execution Grid</h3>
+            <p class="text-sm text-slate-500 font-semibold">Perform enunciation practices on a turn-by-turn basis</p>
+          </div>
+          <button onclick="clearAllTurns()" class="relative z-50 cursor-pointer py-2.5 px-5 bg-white border border-rose-100 text-rose-600 hover:bg-rose-50 active:bg-rose-100 rounded-xl text-xs font-bold shadow-sm transition flex items-center gap-1" style="cursor: pointer !important;">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+            </svg>
+            <span>Clear All Data</span>
+          </button>
+        </div>
+
+        <!-- Dynamic Script Targets injected by script below -->
+        <div class="flex flex-col gap-10" id="turns-container">
+          <!-- Turn cards injected here -->
+        </div>
+      </section>
+
+      <!-- Main Action Floating Indicator -->
+      <div class="flex justify-center my-10">
+        <button onclick="generateCumulativeReport(true)" class="relative z-50 cursor-pointer py-4 px-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-extrabold text-lg rounded-2xl shadow-xl shadow-indigo-500/25 transform hover:-translate-y-0.5 active:translate-y-0 transition flex items-center gap-3 group" style="cursor: pointer !important;">
+          <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"></path>
+          </svg>
+          <span>Compile Comprehensive Evaluation</span>
+        </button>
+      </div>
+
+    </main>
+
+    <footer class="bg-white/80 border-t border-indigo-50 py-5 px-6 text-center text-xs text-slate-400">
+      Dual-Role Pronunciation Lab Platform &copy; 2026. Standalone audio decoding and transcription modules.
+    </footer>
+  </div>
+
+
+  <!-- ================= PAGE 3: SEPARATE CUMULATIVE EVALUATION REPORT VIEW ================= -->
+  <div id="report-view" class="hidden min-h-screen flex flex-col justify-between bg-gradient-to-b from-[#EEF2FF] via-[#FAF5FF] to-white">
+    
+    <!-- Workspace report navigation header -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-indigo-50 py-5 px-6 sticky top-0 z-[100] relative">
+      <div class="max-w-[1600px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+          <button onclick="returnToWorkspace()" class="relative z-[150] cursor-pointer py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-bold shadow-md shadow-indigo-600/10 transition flex items-center gap-1.5" style="cursor: pointer !important;" title="Go back">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span>Console Workspace</span>
+          </button>
+          <div class="text-right sm:text-left">
+            <h1 class="text-lg font-black text-slate-900 tracking-tight">Executive Dialogue Scorecard</h1>
+            <p class="text-[11px] text-slate-500 uppercase font-semibold tracking-wider">Pronunciation Performance Metrics</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-3 justify-end w-full sm:w-auto">
+          <button onclick="exitToWelcome()" class="relative z-[150] cursor-pointer p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition" style="cursor: pointer !important;" title="Home">
+            Home
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Comprehensive Report content container -->
+    <main class="flex-grow max-w-[1600px] w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-8">
+      
+      <section class="bg-white rounded-3xl border border-indigo-100/60 shadow-xl shadow-indigo-100/30 p-6 sm:p-10 flex flex-col gap-10 print-full-width">
+        
+        <!-- Scorecard Header Block -->
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between border-b border-indigo-50 pb-6 gap-4">
+          <div class="space-y-1">
+            <span class="inline-flex items-center gap-1 px-3 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100 uppercase tracking-widest">
+              Linguistic Report Summary
+            </span>
+            <h2 class="text-3xl font-black text-slate-900 tracking-tight font-sans">Cumulative Dialogue Performance</h2>
+            <p class="text-sm text-slate-500 font-semibold">Analyzed standard UK articulation profiles & spelling comparison diagnostics</p>
+          </div>
+          <div class="text-right text-xs text-slate-400 font-semibold">
+            Ref: LAL-2026-NATIVE
+          </div>
+        </div>
+
+        <!-- Merged Audio Continuous Dialogue Playback -->
+        <div id="merged-audio-container" class="bg-gradient-to-r from-violet-50 via-indigo-50 to-white p-6 sm:p-8 rounded-3xl border border-indigo-100/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative overflow-hidden">
+          <div class="absolute w-32 h-32 rounded-full bg-indigo-200/20 blur-xl -left-10 -bottom-10 pointer-events-none z-[-10]"></div>
+          
+          <!-- Playback meta text info -->
+          <div class="flex items-center gap-4 z-10">
+            <div class="p-4 bg-indigo-600 text-white rounded-2xl shadow-md shadow-indigo-500/20 text-xl font-bold shrink-0">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/>
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-black text-slate-950 text-base">Combined Dialogue Synthesis playback</h4>
+              <p id="merged-audio-status" class="text-sm text-indigo-700 font-bold mt-0.5">Merging your turn recording files into one conversation...</p>
+            </div>
+          </div>
+          
+          <!-- Standard player controls -->
+          <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto shrink-0 z-10">
+            <audio id="merged-audio-player" class="h-10 w-full sm:w-64" controls></audio>
+            <button id="btn-download-combined" class="hidden relative z-50 cursor-pointer py-2.5 px-5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm" style="cursor: pointer !important;" onclick="downloadCombinedAudio()">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+              <span>Download Audio</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Premium SVG Progress-Ring KPI Assessment Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- Speaker A Gauge Container -->
+          <div class="bg-white rounded-3xl p-6 border border-indigo-100 flex flex-col sm:flex-row items-center gap-6 shadow-sm shadow-indigo-100/20">
+            <div class="relative w-28 h-28 shrink-0 flex items-center justify-center">
+              <svg width="112" height="112" viewBox="0 0 112 112" class="absolute transform -rotate-90">
+                <circle cx="56" cy="56" r="48" stroke="#EEF2FF" stroke-width="8" fill="transparent" />
+                <circle id="role-a-circle" cx="56" cy="56" r="48" stroke="#6D28D9" stroke-width="8" stroke-dasharray="301.6" stroke-dashoffset="301.6" stroke-linecap="round" fill="transparent" class="transition-all duration-1000" />
+              </svg>
+              <span id="role-a-gauge" class="text-2xl font-black text-indigo-900 z-10">0%</span>
+            </div>
+            <div class="space-y-1">
+              <span class="text-xs font-bold text-violet-600 uppercase tracking-widest">Role A Articulation</span>
+              <h4 class="text-xl font-black text-slate-900 leading-tight">Speaker A Scorecard</h4>
+              <p class="text-sm text-slate-500 mt-1 leading-relaxed" id="role-a-summary-text">Awaiting diagnostic metrics evaluation.</p>
+            </div>
+          </div>
+
+          <!-- Speaker B Gauge Container -->
+          <div class="bg-white rounded-3xl p-6 border border-indigo-100 flex flex-col sm:flex-row items-center gap-6 shadow-sm shadow-indigo-100/20">
+            <div class="relative w-28 h-28 shrink-0 flex items-center justify-center">
+              <svg width="112" height="112" viewBox="0 0 112 112" class="absolute transform -rotate-90">
+                <circle cx="56" cy="56" r="48" stroke="#ECFDF5" stroke-width="8" fill="transparent" />
+                <circle id="role-b-circle" cx="56" cy="56" r="48" stroke="#10B981" stroke-width="8" stroke-dasharray="301.6" stroke-dashoffset="301.6" stroke-linecap="round" fill="transparent" class="transition-all duration-1000" />
+              </svg>
+              <span id="role-b-gauge" class="text-2xl font-black text-emerald-900 z-10">0%</span>
+            </div>
+            <div class="space-y-1">
+              <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Role B Articulation</span>
+              <h4 class="text-xl font-black text-slate-900 leading-tight">Speaker B Scorecard</h4>
+              <p class="text-sm text-slate-500 mt-1 leading-relaxed" id="role-b-summary-text">Awaiting diagnostic metrics evaluation.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Custom Targeted drills -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- Drill block A -->
+          <div class="flex flex-col gap-4 p-6 rounded-3xl border border-indigo-100 bg-[#FAF5FF]/30">
+            <h5 class="text-base font-black text-violet-800 uppercase tracking-widest flex items-center gap-2">
+              <svg class="w-5 h-5 text-violet-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span>Speaker A Diagnostic Drills</span>
+            </h5>
+            <div class="flex flex-wrap gap-2.5" id="role-a-drills-list">
+              <!-- Dynamically populated target lists -->
+            </div>
+          </div>
+
+          <!-- Drill block B -->
+          <div class="flex flex-col gap-4 p-6 rounded-3xl border border-indigo-100 bg-emerald-50/20">
+            <h5 class="text-base font-black text-emerald-800 uppercase tracking-widest flex items-center gap-2">
+              <svg class="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span>Speaker B Diagnostic Drills</span>
+            </h5>
+            <div class="flex flex-wrap gap-2.5" id="role-b-drills-list">
+              <!-- Dynamically populated target lists -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Horizontal Multi-Turn Performance Progression Timeline Matrix -->
+        <div class="border border-indigo-50 p-6 rounded-3xl space-y-4 shadow-sm shadow-indigo-100/10">
+          <h4 class="text-xs font-bold uppercase text-slate-400 tracking-widest">Dialogue Multi-Turn Accuracy Progression</h4>
+          <div class="space-y-3.5" id="report-progression-timeline">
+            <!-- Render horizontal progress bars via script -->
+          </div>
+        </div>
+
+        <!-- Gemini Linguistic advisory coach evaluation card -->
+        <div class="border-t border-indigo-100 pt-8 flex flex-col gap-6">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between flex-wrap gap-6 bg-gradient-to-r from-violet-50 via-indigo-50 to-white p-6 sm:p-8 rounded-3xl border border-indigo-100/50">
+            <div class="flex items-center gap-4">
+              <span class="p-3 bg-violet-100 text-violet-600 rounded-2xl text-2xl font-bold shrink-0">
+                <svg class="w-8 h-8 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+              </span>
+              <div>
+                <h4 class="font-black text-slate-900 text-lg">Gemini AI Fluency & Phonetic Advisor</h4>
+                <p class="text-sm text-slate-500 mt-0.5">Initiate a deep assessment evaluation across speech transcription gaps to extract precise oral remedies.</p>
+              </div>
+            </div>
+            <button id="btn-run-ai-coach" onclick="generateAICoaching()" class="relative z-50 cursor-pointer py-3.5 px-8 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm rounded-xl shadow-md transition flex items-center gap-2" style="cursor: pointer !important;">
+              <span id="ai-coach-btn-text">Run Deep AI Evaluation</span>
+              <div id="ai-coach-spinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            </button>
+          </div>
+
+          <!-- Rendered AI Advisor results block -->
+          <div id="ai-coaching-output-card" class="hidden bg-[#1E1B4B] text-[#EEF2FF] rounded-3xl border border-indigo-950 shadow-2xl p-8 sm:p-12 flex flex-col gap-8 leading-relaxed text-lg">
+            <div class="flex items-center justify-between border-b border-indigo-900 pb-5">
+              <div class="flex items-center gap-3">
+                <span class="text-violet-400 text-xl">✨</span>
+                <span class="font-black tracking-wider uppercase text-sm sm:text-base text-indigo-200">Linguistic Advisory Analysis</span>
+              </div>
+            </div>
+            <div id="ai-coaching-text-content" class="space-y-6 text-indigo-100/90 leading-relaxed font-sans text-base sm:text-lg">
+              <!-- Evaluation text markup rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+
+      </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-100 py-5 px-6 text-center text-xs text-slate-400">
+      Dual-Role Pronunciation Lab Engine &copy; 2026. Automated portfolio logs.
+    </footer>
+  </div>
+
+
+<!-- Firebase dynamic integrations standard library setup imports -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+  import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+  const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-pronunciation-lab-app';
+  const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+  const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+  let db = null;
+  let auth = null;
+  let activeUser = null;
+
+  // Connect standard Firestore database routines securely
+  async function startCloudServiceSync() {
+    if (!firebaseConfig) {
+      console.warn("No Firebase configuration payload available. Sandbox state loaded.");
+      const ind = document.getElementById('cloud-indicator');
+      if (ind) {
+        ind.innerText = "Offline Practice Sandbox";
+        ind.className = "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500 border border-slate-200 shadow-sm";
+      }
+      return;
+    }
+
+    try {
+      const app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
+      auth = getAuth(app);
+
+      let credential;
+      if (initialAuthToken) {
+        credential = await signInWithCustomToken(auth, initialAuthToken);
+      } else {
+        credential = await signInAnonymously(auth);
+      }
+
+      activeUser = credential.user;
+      const ind = document.getElementById('cloud-indicator');
+      if (ind) {
+        ind.innerText = "Cloud Sync Active";
+        ind.className = "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm";
+      }
+
+    } catch (err) {
+      console.error("Cloud connection failure:", err);
+      const ind = document.getElementById('cloud-indicator');
+      if (ind) {
+        ind.innerText = "Sync Locked / Sandbox Mode";
+        ind.className = "inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 shadow-sm";
+      }
+    }
+  }
+
+  // Helper utility to convert a binary Audio Blob to lightweight Base64 string for Firestore serialization
+  function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  // Helper utility to convert Base64 string back to binary Audio Blob
+  function base64ToBlob(base64DataUrl) {
+    const parts = base64DataUrl.split(';base64,');
+    const contentType = parts[0].split(':')[1];
+    const raw = window.atob(parts[1]);
+    const rawLength = raw.length;
+    const uInt8Array = new Uint8Array(rawLength);
+    for (let i = 0; i < rawLength; ++i) {
+      uInt8Array[i] = raw.charCodeAt(i);
+    }
+    return new Blob([uInt8Array], { type: contentType });
+  }
+
+  // Converts active sessionData audio blobs into lightweight serializable payloads
+  async function serializeSessionData(data) {
+    const serialized = {};
+    for (let t = 1; t <= 6; t++) {
+      serialized[t] = {
+        A: { ...data[t].A, audioBlob: null, audioUrl: null, audioBase64: null },
+        B: { ...data[t].B, audioBlob: null, audioUrl: null, audioBase64: null }
+      };
+
+      if (data[t].A.audioBlob) {
+        serialized[t].A.audioBase64 = await blobToBase64(data[t].A.audioBlob);
+      }
+      if (data[t].B.audioBlob) {
+        serialized[t].B.audioBase64 = await blobToBase64(data[t].B.audioBlob);
+      }
+    }
+    return serialized;
+  }
+
+  // Save report specifically to private user path
+  async function savePerformanceReport(scoreA, scoreB) {
+    if (!db || !activeUser) return;
+
+    try {
+      const serialized = await serializeSessionData(sessionData);
+      const payload = {
+        timestamp: new Date().toISOString(),
+        scoreA: scoreA,
+        scoreB: scoreB,
+        sessionData: JSON.stringify(serialized)
+      };
+
+      await addDoc(collection(db, 'artifacts', appId, 'users', activeUser.uid, 'reports'), payload);
+      console.log("Performance report synced successfully.");
+    } catch (err) {
+      console.error("Failed cloud save operation:", err);
+    }
+  }
+
+  window.savePerformanceReport = savePerformanceReport;
+  startCloudServiceSync();
+</script>
+
+  <script>
+    // State management maps for standard audio buffers and speech transcription records
+    const sessionData = {};
+    for (let t = 1; t <= 6; t++) {
+      sessionData[t] = {
+        A: { targetText: "", actualTranscript: "", audioBlob: null, audioUrl: null, score: 0, transcriptBeforeSegment: "" },
+        B: { targetText: "", actualTranscript: "", audioBlob: null, audioUrl: null, score: 0, transcriptBeforeSegment: "" }
+      };
+    }
+
+    // Direct recording/recognition states
+    let activeRecordTurn = null; // Turn 1-6
+    let activeRecordRole = null; // 'A' or 'B'
+    let activeRecordState = 'idle'; // 'idle' | 'recording' | 'paused'
+
+    // Prevent overlapping playback tracks
+    let activePlaybackAudio = null;
+    let activePlaybackTurn = null;
+    let activePlaybackRole = null;
+
+    let localSpeechRecognition = null;
+    let localMediaStream = null;
+    let localMediaRecorder = null;
+    let currentSessionChunks = [];
+
+    // Hardware microphone testing parameters
+    let audioCtxTest = null;
+    let analyserTest = null;
+    let micGainNode = null;
+    let micStreamTest = null;
+    let visualizerLoop = null;
+
+    // Cached standard UK voices for synth speech
+    let ukSpeechVoice = null;
+    let currentMergedAudioBlob = null; // Store globally when rendering combined audio
+
+    const normalizeForMatch = (word) => {
+      return word.toLowerCase()
+        .replace(/[’’]/g, "'")
+        .replace(/[–—]/g, "-")
+        .replace(/[.,\/#!$%\^&\*;:{}=\_`~()?]/g, "")
+        .replace(/'/g, "")
+        .trim();
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderTurnInputs();
+      initializeUKVoice();
+      checkSpeechRecognitionSupport();
+    });
+
+    async function activateMicTest() {
+      const badge = document.getElementById('mic-status-badge');
+      const startBtn = document.getElementById('btn-start-lab');
+      const bar = document.getElementById('mic-meter-bar');
+      const circle = document.getElementById('mic-indicator-circle');
+
+      badge.innerText = "Connecting Mic...";
+      badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200 animate-pulse";
+
+      try {
+        micStreamTest = await navigator.mediaDevices.getUserMedia({ audio: true });
+        
+        badge.innerText = "Microphone Ready";
+        badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200";
+
+        // Enable Main Conversation Trigger Button
+        startBtn.disabled = false;
+        startBtn.classList.remove('opacity-60', 'cursor-not-allowed', 'from-violet-400', 'to-indigo-400');
+        startBtn.classList.add('from-violet-600', 'to-indigo-600', 'hover:from-violet-500', 'hover:to-indigo-500', 'shadow-indigo-500/30');
+
+        audioCtxTest = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Explicitly resume audio context if suspended by browser security policy
+        if (audioCtxTest.state === 'suspended') {
+          await audioCtxTest.resume();
+        }
+
+        analyserTest = audioCtxTest.createAnalyser();
+        const source = audioCtxTest.createMediaStreamSource(micStreamTest);
+        
+        analyserTest.fftSize = 64;
+        source.connect(analyserTest);
+
+        // Create a silent gain node connected to destination to force Web Audio engine to pull/process analyser data
+        const silentGain = audioCtxTest.createGain();
+        silentGain.gain.value = 0.0;
+        analyserTest.connect(silentGain);
+        silentGain.connect(audioCtxTest.destination);
+
+        // Create a gain controller for loopback audio output
+        micGainNode = audioCtxTest.createGain();
+        micGainNode.gain.value = 0.95; // Optimal volume level
+        analyserTest.connect(micGainNode);
+
+        // Check if the loopback switch is enabled, connect to output destination
+        const loopbackToggle = document.getElementById('toggle-mic-loopback');
+        if (loopbackToggle && loopbackToggle.checked) {
+          micGainNode.connect(audioCtxTest.destination);
+        }
+
+        const dataArray = new Uint8Array(analyserTest.frequencyBinCount);
+
+        function processMeter() {
+          if (!analyserTest) return;
+          visualizerLoop = requestAnimationFrame(processMeter);
+          analyserTest.getByteFrequencyData(dataArray);
+
+          let total = 0;
+          for (let i = 0; i < dataArray.length; i++) {
+            total += dataArray[i];
+          }
+          const level = Math.min(100, Math.round((total / dataArray.length) * 1.5));
+          bar.style.width = `${level}%`;
+
+          const scale = 1 + (level / 200);
+          circle.style.transform = `scale(${scale})`;
+        }
+        processMeter();
+
+      } catch (err) {
+        console.error("Hardware permission denied:", err);
+        badge.innerText = "Activation Blocked";
+        badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-700 border border-rose-200";
+        startBtn.disabled = true;
+      }
+    }
+
+    function toggleLoopbackState() {
+      const loopbackToggle = document.getElementById('toggle-mic-loopback');
+      if (!loopbackToggle) return;
+
+      if (audioCtxTest && micGainNode) {
+        if (loopbackToggle.checked) {
+          // Send microphonic input to default speakers
+          micGainNode.connect(audioCtxTest.destination);
+        } else {
+          try {
+            // Disconnect immediately to silence loopback
+            micGainNode.disconnect(audioCtxTest.destination);
+          } catch (e) {
+            console.log("Audio loopback already offline.", e);
+          }
+        }
+      }
+    }
+
+    function stopMicrophoneTest() {
+      if (visualizerLoop) {
+        cancelAnimationFrame(visualizerLoop);
+        visualizerLoop = null;
+      }
+      if (micStreamTest) {
+        micStreamTest.getTracks().forEach(track => track.stop());
+        micStreamTest = null;
+      }
+      if (audioCtxTest) {
+        if (micGainNode) {
+          try { micGainNode.disconnect(); } catch (e) {}
+          micGainNode = null;
+        }
+        audioCtxTest.close();
+        audioCtxTest = null;
+      }
+    }
+
+    function enterPracticeLab() {
+      // Deactivate Page 1 diagnostics check to clean audio nodes
+      stopMicrophoneTest();
+
+      const welcome = document.getElementById('welcome-view');
+      const workspace = document.getElementById('lab-workspace-view');
+      const report = document.getElementById('report-view');
+      
+      welcome.classList.add('hidden');
+      workspace.classList.remove('hidden');
+      report.classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function exitToWelcome() {
+      const welcome = document.getElementById('welcome-view');
+      const workspace = document.getElementById('lab-workspace-view');
+      const report = document.getElementById('report-view');
+      
+      if (activeRecordTurn !== null) {
+        stopBlockRecording(activeRecordTurn, activeRecordRole);
+        activeRecordTurn = null;
+        activeRecordRole = null;
+        activeRecordState = 'idle';
+      }
+
+      if (activePlaybackAudio) {
+        activePlaybackAudio.pause();
+        activePlaybackAudio = null;
+        activePlaybackTurn = null;
+        activePlaybackRole = null;
+      }
+
+      welcome.classList.remove('hidden');
+      workspace.classList.add('hidden');
+      report.classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function returnToWorkspace() {
+      const workspace = document.getElementById('lab-workspace-view');
+      const report = document.getElementById('report-view');
+      
+      workspace.classList.remove('hidden');
+      report.classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetTurnBlock(turn, role) {
+      const lowerRole = role.toLowerCase();
+      
+      if (activeRecordTurn === turn && activeRecordRole === role) {
+        stopBlockRecording(turn, role);
+        activeRecordTurn = null;
+        activeRecordRole = null;
+        activeRecordState = 'idle';
+      }
+
+      if (activePlaybackAudio && activePlaybackTurn === turn && activePlaybackRole === role) {
+        activePlaybackAudio.pause();
+        activePlaybackAudio = null;
+        activePlaybackTurn = null;
+        activePlaybackRole = null;
+      }
+
+      sessionData[turn][role] = { targetText: "", actualTranscript: "", audioBlob: null, audioUrl: null, score: 0, transcriptBeforeSegment: "" };
+      
+      document.getElementById(`input-turn-${turn}-${lowerRole}`).value = "";
+      document.getElementById(`transcript-turn-${turn}-${lowerRole}`).value = "";
+      
+      const badge = document.getElementById(`turn-${turn}-${lowerRole}-badge`);
+      badge.innerText = "Unexamined";
+      badge.className = "text-xs sm:text-sm font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200/60";
+      
+      const feedback = document.getElementById(`feedback-turn-${turn}-${lowerRole}`);
+      feedback.classList.add('hidden');
+      feedback.innerHTML = "";
+
+      renderActionBar(turn, role);
+      updateInteractiveProgressMarkers();
+    }
+
+    function clearTranscriptOnly(turn, role) {
+      const lowerRole = role.toLowerCase();
+      
+      if (activeRecordTurn === turn && activeRecordRole === role) {
+        stopBlockRecording(turn, role);
+        activeRecordTurn = null;
+        activeRecordRole = null;
+        activeRecordState = 'idle';
+      }
+
+      if (activePlaybackAudio && activePlaybackTurn === turn && activePlaybackRole === role) {
+        activePlaybackAudio.pause();
+        activePlaybackAudio = null;
+        activePlaybackTurn = null;
+        activePlaybackRole = null;
+      }
+
+      sessionData[turn][role].actualTranscript = "";
+      sessionData[turn][role].audioBlob = null;
+      sessionData[turn][role].audioUrl = null;
+      sessionData[turn][role].score = 0;
+      sessionData[turn][role].transcriptBeforeSegment = "";
+
+      document.getElementById(`transcript-turn-${turn}-${lowerRole}`).value = "";
+      
+      const badge = document.getElementById(`turn-${turn}-${lowerRole}-badge`);
+      badge.innerText = "Unexamined";
+      badge.className = "text-xs sm:text-sm font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200/60";
+      
+      const feedback = document.getElementById(`feedback-turn-${turn}-${lowerRole}`);
+      feedback.classList.add('hidden');
+      feedback.innerHTML = "";
+
+      renderActionBar(turn, role);
+      updateInteractiveProgressMarkers();
+    }
+
+    function speakTargetText(turn, role) {
+      const lowerRole = role.toLowerCase();
+      const targetText = document.getElementById(`input-turn-${turn}-${lowerRole}`).value.trim();
+      const speedSelector = document.getElementById(`tts-speed-${turn}-${lowerRole}`);
+      const speedVal = speedSelector ? parseFloat(speedSelector.value) : 0.75;
+      if (targetText) {
+        speakUK(targetText, speedVal);
+      }
+    }
+
+    function renderTurnInputs() {
+      const container = document.getElementById('turns-container');
+      container.innerHTML = "";
+
+      for (let t = 1; t <= 6; t++) {
+        const turnRow = document.createElement('div');
+        turnRow.className = "bg-white border border-indigo-100/60 rounded-3xl p-6 shadow-xl shadow-indigo-100/30 flex flex-col gap-6 relative transition hover:shadow-indigo-100/40 w-full";
+        turnRow.innerHTML = `
+          <!-- Header and VS Banner -->
+          <div class="flex items-center justify-between border-b border-indigo-50 pb-3">
+            <span class="text-sm font-black text-indigo-700 bg-indigo-50/80 px-4 py-1.5 rounded-full uppercase tracking-wider border border-indigo-100">Turn ${t}</span>
+            <div class="hidden lg:flex items-center gap-2">
+              <span class="h-px w-8 bg-indigo-100"></span>
+              <span class="text-xs font-bold uppercase tracking-widest text-indigo-300">VS</span>
+              <span class="h-px w-8 bg-indigo-100"></span>
+            </div>
+            <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Independent Roles</span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 relative">
+            
+            <!-- ROLE A COLUMN (VIOLET/INDIGO ACCENTS) -->
+            <div class="flex flex-col gap-4 p-5 rounded-2xl bg-gradient-to-b from-indigo-50/30 to-white border border-indigo-100/40 relative">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="p-1.5 bg-indigo-100 text-indigo-700 rounded-lg text-xs">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/>
+                    </svg>
+                  </span>
+                  <label class="text-xs sm:text-sm font-black text-indigo-800 uppercase tracking-widest">Role A Dialog</label>
+                  <button onclick="speakTargetText(${t}, 'A')" class="relative z-50 cursor-pointer inline-flex items-center justify-center bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-lg px-3 py-1 shadow-sm transition transform hover:scale-105 active:scale-95 text-xs uppercase tracking-wider gap-1" style="cursor: pointer !important;" title="Play UK Voice synthesis">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                    </svg>
+                    <span>LISTEN</span>
+                  </button>
+                  <select id="tts-speed-${t}-a" class="bg-white border border-indigo-100 rounded px-1.5 py-0.5 text-xs font-bold text-indigo-700 focus:outline-none" title="Pacing Speed">
+                    <option value="1.0">1.0x</option>
+                    <option value="0.75" selected>0.75x</option>
+                    <option value="0.5">0.5x</option>
+                  </select>
+                </div>
+                <span id="turn-${t}-a-badge" class="text-xs sm:text-sm font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200/60 shadow-sm">Unexamined</span>
+              </div>
+              
+              <textarea id="input-turn-${t}-a" oninput="updateScriptText(${t}, 'A')" rows="3" class="w-full text-lg sm:text-xl font-medium p-4 border border-indigo-100/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-[#F8FAFC]/50 text-slate-900 leading-relaxed" placeholder="Enter Role A scripts..."></textarea>
+              
+              <!-- Action Button Triggers Container -->
+              <div class="flex items-center gap-2 flex-wrap" id="action-bar-turn-${t}-a"></div>
+
+              <!-- Transcript details area -->
+              <div class="flex flex-col gap-2 pt-2 border-t border-indigo-50">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wide">Actual Spoken Transcript (Editable)</span>
+                <textarea id="transcript-turn-${t}-a" oninput="updateTranscriptText(${t}, 'A')" class="w-full text-base sm:text-lg p-3 bg-white border border-indigo-50 rounded-xl h-24 focus:ring-1 focus:ring-indigo-200 focus:outline-none" placeholder="Speech text display..."></textarea>
+                <div class="flex justify-end">
+                  <button onclick="clearTranscriptOnly(${t}, 'A')" class="relative z-50 cursor-pointer py-1 px-2.5 bg-slate-50 hover:bg-rose-50 text-slate-500 hover:text-rose-600 border border-slate-100 rounded-lg text-xs font-bold transition shadow-sm flex items-center gap-1" style="cursor: pointer !important;">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                    </svg>
+                    <span>Clear Spoken</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Inline Evaluation dynamic markup -->
+              <div id="feedback-turn-${t}-a" class="hidden p-3.5 bg-white border border-indigo-100/60 rounded-xl text-base sm:text-lg leading-relaxed font-sans"></div>
+            </div>
+
+            <!-- ROLE B COLUMN (EMERALD/TEAL ACCENTS) -->
+            <div class="flex flex-col gap-4 p-5 rounded-2xl bg-gradient-to-b from-emerald-50/30 to-white border border-emerald-100/40 relative">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="p-1.5 bg-emerald-100 text-emerald-700 rounded-lg text-xs">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/>
+                    </svg>
+                  </span>
+                  <label class="text-xs sm:text-sm font-black text-emerald-800 uppercase tracking-widest">Role B Dialog</label>
+                  <button onclick="speakTargetText(${t}, 'B')" class="relative z-50 cursor-pointer inline-flex items-center justify-center bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-lg px-3 py-1 shadow-sm transition transform hover:scale-105 active:scale-95 text-xs uppercase tracking-wider gap-1" style="cursor: pointer !important;" title="Play UK Voice synthesis">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                    </svg>
+                    <span>LISTEN</span>
+                  </button>
+                  <select id="tts-speed-${t}-b" class="bg-white border border-indigo-100 rounded px-1.5 py-0.5 text-xs font-bold text-indigo-700 focus:outline-none" title="Pacing Speed">
+                    <option value="1.0">1.0x</option>
+                    <option value="0.75" selected>0.75x</option>
+                    <option value="0.5">0.5x</option>
+                  </select>
+                </div>
+                <span id="turn-${t}-b-badge" class="text-xs sm:text-sm font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200/60 shadow-sm">Unexamined</span>
+              </div>
+              
+              <textarea id="input-turn-${t}-b" oninput="updateScriptText(${t}, 'B')" rows="3" class="w-full text-lg sm:text-xl font-medium p-4 border border-emerald-100/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-[#F8FAFC]/50 text-slate-900 leading-relaxed" placeholder="Enter Role B scripts..."></textarea>
+              
+              <!-- Action Button Triggers Container -->
+              <div class="flex items-center gap-2 flex-wrap" id="action-bar-turn-${t}-b"></div>
+
+              <!-- Transcript details area -->
+              <div class="flex flex-col gap-2 pt-2 border-t border-emerald-50">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wide">Actual Spoken Transcript (Editable)</span>
+                <textarea id="transcript-turn-${t}-b" oninput="updateTranscriptText(${t}, 'B')" class="w-full text-base sm:text-lg p-3 bg-white border border-emerald-50 rounded-xl h-24 focus:ring-1 focus:ring-emerald-200 focus:outline-none" placeholder="Speech text display..."></textarea>
+                <div class="flex justify-end">
+                  <button onclick="clearTranscriptOnly(${t}, 'B')" class="relative z-50 cursor-pointer py-1 px-2.5 bg-slate-50 hover:bg-rose-50 text-slate-500 hover:text-rose-600 border border-slate-100 rounded-lg text-xs font-bold transition shadow-sm flex items-center gap-1" style="cursor: pointer !important;">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                    </svg>
+                    <span>Clear Spoken</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Inline Evaluation dynamic markup -->
+              <div id="feedback-turn-${t}-b" class="hidden p-3.5 bg-white border border-emerald-100/60 rounded-xl text-base sm:text-lg leading-relaxed font-sans"></div>
+            </div>
+
+          </div>
+        `;
+        container.appendChild(turnRow);
+        
+        // Render action bars for this row
+        renderActionBar(t, 'A');
+        renderActionBar(t, 'B');
+      }
+    }
+
+    function renderActionBar(turn, role) {
+      const lowerRole = role.toLowerCase();
+      const container = document.getElementById(`action-bar-turn-${turn}-${lowerRole}`);
+      if (!container) return;
+
+      const isActive = (activeRecordTurn === turn && activeRecordRole === role);
+      const state = isActive ? activeRecordState : 'idle';
+
+      let recordButtonsHtml = '';
+
+      if (state === 'idle') {
+        recordButtonsHtml = `
+          <button onclick="handleRecordClick(${turn}, '${role}')" class="relative z-50 cursor-pointer py-2 px-4 ${role === 'A' ? 'bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-indigo-600/10' : 'bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 shadow-emerald-600/10'} text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md" style="cursor: pointer !important;">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/>
+            </svg>
+            <span>Record</span>
+          </button>
+        `;
+      } else if (state === 'recording') {
+        recordButtonsHtml = `
+          <button onclick="handlePauseClick(${turn}, '${role}')" class="relative z-50 cursor-pointer py-2 px-4 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-amber-500/10" style="cursor: pointer !important;">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+            </svg>
+            <span>Pause</span>
+          </button>
+          <button onclick="handleStopClick(${turn}, '${role}')" class="relative z-50 cursor-pointer py-2 px-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-rose-500/10" style="cursor: pointer !important;">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2" fill="none" />
+            </svg>
+            <span>Stop & Save</span>
+          </button>
+        `;
+      } else if (state === 'paused') {
+        recordButtonsHtml = `
+          <button onclick="handleResumeClick(${turn}, '${role}')" class="relative z-50 cursor-pointer py-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-indigo-600/10" style="cursor: pointer !important;">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 10v1a7 7 0 0 1-14 0v-1M12 19v4M8 23h8"/>
+            </svg>
+            <span>Resume</span>
+          </button>
+          <button onclick="handleStopClick(${turn}, '${role}')" class="relative z-50 cursor-pointer py-2 px-4 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-rose-500/10" style="cursor: pointer !important;">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2" fill="none" />
+            </svg>
+            <span>Stop & Save</span>
+          </button>
+        `;
+      }
+
+      const hasAudio = !!sessionData[turn][role].audioUrl;
+      const playBtnColorClass = hasAudio 
+        ? 'bg-white border border-indigo-100 text-indigo-700 hover:bg-indigo-50 shadow-sm' 
+        : 'bg-slate-100 text-slate-400 opacity-60 cursor-not-allowed';
+      const isCurrentlyPlaying = (activePlaybackTurn === turn && activePlaybackRole === role && activePlaybackAudio);
+
+      const playButtonHtml = `
+        <button id="btn-play-${turn}-${lowerRole}" ${hasAudio ? '' : 'disabled'} onclick="playbackTurnAudio(${turn}, '${role}')" class="relative z-50 cursor-pointer py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${playBtnColorClass}" style="cursor: pointer !important;">
+          ${isCurrentlyPlaying ? `
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="2" fill="none" />
+            </svg>
+            <span>Stop Playback</span>
+          ` : `
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+            </svg>
+            <span>Playback</span>
+          `}
+        </button>
+      `;
+
+      const analyzeButtonHtml = `
+        <button id="btn-analyze-${turn}-${lowerRole}" onclick="runTurnAnalysis(${turn}, '${role}')" class="relative z-50 cursor-pointer py-2 px-4 bg-slate-50 hover:bg-indigo-50 text-indigo-700 border border-indigo-100 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm" style="cursor: pointer !important;">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v5.625c0 .621-.504 1.125-1.125 1.125h-2.25A1.125 1.125 0 013 18.75v-5.625zM16.5 13.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 12 21 12.504 21 13.125v5.625c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125v-5.625zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v10.125c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625z" />
+          </svg>
+          <span>Analyze</span>
+        </button>
+      `;
+
+      container.innerHTML = `
+        ${recordButtonsHtml}
+        ${playButtonHtml}
+        ${analyzeButtonHtml}
+      `;
+    }
+
+    function handleRecordClick(turn, role) {
+      if (activeRecordTurn !== null) {
+        handleStopClick(activeRecordTurn, activeRecordRole);
+      }
+      activeRecordTurn = turn;
+      activeRecordRole = role;
+      activeRecordState = 'recording';
+
+      startBlockRecording(turn, role);
+    }
+
+    function handlePauseClick(turn, role) {
+      if (activeRecordTurn !== turn || activeRecordRole !== role) return;
+      activeRecordState = 'paused';
+
+      pauseBlockRecording(turn, role);
+    }
+
+    function handleResumeClick(turn, role) {
+      if (activeRecordTurn !== turn || activeRecordRole !== role) return;
+      activeRecordState = 'recording';
+
+      resumeBlockRecording(turn, role);
+    }
+
+    function handleStopClick(turn, role) {
+      if (activeRecordTurn !== turn || activeRecordRole !== role) return;
+      activeRecordState = 'idle';
+
+      stopBlockRecording(turn, role);
+      activeRecordTurn = null;
+      activeRecordRole = null;
+    }
+
+    async function startBlockRecording(turn, role) {
+      const baseText = document.getElementById(`transcript-turn-${turn}-${role.toLowerCase()}`).value.trim();
+      sessionData[turn][role].transcriptBeforeSegment = baseText;
+
+      const globalBar = document.getElementById('global-recording-bar');
+      globalBar.classList.remove('hidden');
+      globalBar.classList.add('flex');
+      document.getElementById('global-recording-text').innerText = `Recording: Turn ${turn} (Role ${role})`;
+
+      currentSessionChunks = [];
+
+      try {
+        localMediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        localMediaRecorder = new MediaRecorder(localMediaStream);
+        localMediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) currentSessionChunks.push(e.data);
+        };
+
+        localMediaRecorder.onstop = () => {
+          if (currentSessionChunks.length > 0) {
+            const audioBlob = new Blob(currentSessionChunks, { type: 'audio/wav' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+
+            sessionData[turn][role].audioBlob = audioBlob;
+            sessionData[turn][role].audioUrl = audioUrl;
+
+            renderActionBar(turn, role);
+            updateInteractiveProgressMarkers();
+          }
+        };
+
+        localMediaRecorder.start();
+
+      } catch (err) {
+        console.error("Local hardware mic blocked:", err);
+      }
+
+      startSpeechRecognitionSession(turn, role);
+      renderActionBar(turn, role);
+    }
+
+    function pauseBlockRecording(turn, role) {
+      const globalBarText = document.getElementById('global-recording-text');
+      if (globalBarText) {
+        globalBarText.innerText = `Recording Paused: Turn ${turn} (Role ${role})`;
+      }
+
+      if (localMediaRecorder && localMediaRecorder.state === 'recording') {
+        try {
+          localMediaRecorder.pause();
+        } catch (e) {
+          console.warn("MediaRecorder pause anomaly:", e);
+        }
+      }
+
+      if (localSpeechRecognition) {
+        localSpeechRecognition.stop();
+      }
+
+      renderActionBar(turn, role);
+    }
+
+    function resumeBlockRecording(turn, role) {
+      const globalBarText = document.getElementById('global-recording-text');
+      if (globalBarText) {
+        globalBarText.innerText = `Recording: Turn ${turn} (Role ${role})`;
+      }
+
+      if (localMediaRecorder && localMediaRecorder.state === 'paused') {
+        try {
+          localMediaRecorder.resume();
+        } catch (e) {
+          console.warn("MediaRecorder resume anomaly:", e);
+        }
+      }
+
+      const currentText = document.getElementById(`transcript-turn-${turn}-${role.toLowerCase()}`).value.trim();
+      sessionData[turn][role].transcriptBeforeSegment = currentText;
+
+      startSpeechRecognitionSession(turn, role);
+      renderActionBar(turn, role);
+    }
+
+    function startSpeechRecognitionSession(turn, role) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        try {
+          localSpeechRecognition = new SpeechRecognition();
+          localSpeechRecognition.continuous = true;
+          localSpeechRecognition.interimResults = true;
+          localSpeechRecognition.lang = 'en-US';
+
+          localSpeechRecognition.onresult = (event) => {
+            let finalTranscript = '';
+            let interimTranscript = '';
+
+            for (let i = 0; i < event.results.length; ++i) {
+              if (event.results[i].isFinal) {
+                finalTranscript += event.results[i][0].transcript;
+              } else {
+                interimTranscript += event.results[i][0].transcript;
+              }
+            }
+
+            const baseText = sessionData[turn][role].transcriptBeforeSegment || "";
+            const separator = baseText ? " " : "";
+            const activeDisplay = (baseText + separator + finalTranscript + interimTranscript).trim();
+            document.getElementById(`transcript-turn-${turn}-${role.toLowerCase()}`).value = activeDisplay;
+            sessionData[turn][role].actualTranscript = activeDisplay;
+          };
+
+          localSpeechRecognition.onerror = (event) => {
+            console.warn("Speech recognition notice:", event.error);
+          };
+
+          localSpeechRecognition.start();
+
+        } catch (err) {
+          console.error("Speech recognition setup error:", err);
+        }
+      }
+    }
+
+    function stopBlockRecording(turn, role) {
+      document.getElementById('global-recording-bar').classList.add('hidden');
+      document.getElementById('global-recording-bar').classList.remove('flex');
+
+      if (localSpeechRecognition) {
+        localSpeechRecognition.stop();
+        localSpeechRecognition = null;
+      }
+
+      if (localMediaRecorder && localMediaRecorder.state !== 'inactive') {
+        try {
+          localMediaRecorder.stop();
+        } catch (e) {}
+      }
+
+      if (localMediaStream) {
+        localMediaStream.getTracks().forEach(track => track.stop());
+        localMediaStream = null;
+      }
+
+      sessionData[turn][role].actualTranscript = document.getElementById(`transcript-turn-${turn}-${role.toLowerCase()}`).value.trim();
+
+      setTimeout(() => {
+        renderActionBar(turn, role);
+        updateInteractiveProgressMarkers();
+      }, 150);
+    }
+
+    function stopGlobalSession() {
+      if (activeRecordTurn !== null) {
+        handleStopClick(activeRecordTurn, activeRecordRole);
+      }
+    }
+
+    function playbackTurnAudio(turn, role) {
+      const url = sessionData[turn][role].audioUrl;
+      if (!url) return;
+
+      const lowerRole = role.toLowerCase();
+
+      // Stop immediately if clicking the active speaker to toggle/stop it
+      if (activePlaybackAudio && activePlaybackTurn === turn && activePlaybackRole === role) {
+        activePlaybackAudio.pause();
+        activePlaybackAudio = null;
+        activePlaybackTurn = null;
+        activePlaybackRole = null;
+        renderActionBar(turn, role);
+        return;
+      }
+
+      // Terminate any other playing channel before executing
+      if (activePlaybackAudio) {
+        const prevTurn = activePlaybackTurn;
+        const prevRole = activePlaybackRole;
+        activePlaybackAudio.pause();
+        activePlaybackAudio = null;
+        activePlaybackTurn = null;
+        activePlaybackRole = null;
+        renderActionBar(prevTurn, prevRole);
+      }
+
+      activePlaybackTurn = turn;
+      activePlaybackRole = role;
+      activePlaybackAudio = new Audio(url);
+
+      activePlaybackAudio.onended = () => {
+        activePlaybackAudio = null;
+        activePlaybackTurn = null;
+        activePlaybackRole = null;
+        renderActionBar(turn, role);
+      };
+
+      activePlaybackAudio.onerror = () => {
+        console.error("Audio playback failure");
+        activePlaybackAudio = null;
+        activePlaybackTurn = null;
+        activePlaybackRole = null;
+        renderActionBar(turn, role);
+      };
+
+      activePlaybackAudio.play();
+      renderActionBar(turn, role);
+    }
+
+    function updateScriptText(turn, role) {
+      sessionData[turn][role].targetText = document.getElementById(`input-turn-${turn}-${role.toLowerCase()}`).value;
+      updateInteractiveProgressMarkers();
+    }
+
+    function updateTranscriptText(turn, role) {
+      sessionData[turn][role].actualTranscript = document.getElementById(`transcript-turn-${turn}-${role.toLowerCase()}`).value;
+      updateInteractiveProgressMarkers();
+    }
+
+    function updateInteractiveProgressMarkers() {
+      let activeClips = 0;
+      for (let t = 1; t <= 6; t++) {
+        const marker = document.getElementById(`step-marker-${t}`);
+        if (!marker) continue;
+
+        const hasA = sessionData[t]['A'].targetText.trim() !== "";
+        const hasB = sessionData[t]['B'].targetText.trim() !== "";
+        const recordedA = sessionData[t]['A'].audioBlob !== null || sessionData[t]['A'].actualTranscript.trim() !== "";
+        const recordedB = sessionData[t]['B'].audioBlob !== null || sessionData[t]['B'].actualTranscript.trim() !== "";
+
+        if (sessionData[t]['A'].audioBlob) activeClips++;
+        if (sessionData[t]['B'].audioBlob) activeClips++;
+
+        const innerCircle = marker.querySelector('span');
+
+        if (recordedA && recordedB) {
+          marker.className = "flex items-center gap-1 text-xs font-bold text-violet-700 transition-all";
+          innerCircle.className = "w-5 h-5 rounded-full bg-violet-600 border border-violet-700 flex items-center justify-center text-[10px] text-white shadow-sm font-bold";
+        } else if (hasA || hasB) {
+          marker.className = "flex items-center gap-1 text-xs font-semibold text-indigo-500 transition-all";
+          innerCircle.className = "w-5 h-5 rounded-full bg-indigo-50 border border-indigo-200 flex items-center justify-center text-[10px] text-indigo-700 shadow-sm font-bold animate-pulse";
+        } else {
+          marker.className = "flex items-center gap-1 text-xs font-medium text-slate-400 transition-all";
+          innerCircle.className = "w-5 h-5 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[10px] text-slate-500 font-bold";
+        }
+      }
+
+      const counter = document.getElementById('workspace-records-count');
+      if (counter) counter.innerText = `${activeClips} of 12 clips`;
+    }
+
+    function clearAllTurns() {
+      for (let t = 1; t <= 6; t++) {
+        resetTurnBlock(t, 'A');
+        resetTurnBlock(t, 'B');
+      }
+      document.getElementById('report-view').classList.add('hidden');
+      updateInteractiveProgressMarkers();
+    }
+
+    function runTurnAnalysis(turn, role) {
+      sessionData[turn][role].targetText = document.getElementById(`input-turn-${turn}-${role.toLowerCase()}`).value.trim();
+      sessionData[turn][role].actualTranscript = document.getElementById(`transcript-turn-${turn}-${role.toLowerCase()}`).value.trim();
+
+      const targetText = sessionData[turn][role].targetText;
+      const spokenText = sessionData[turn][role].actualTranscript;
+
+      const badge = document.getElementById(`turn-${turn}-${role.toLowerCase()}-badge`);
+      const container = document.getElementById(`feedback-turn-${turn}-${role.toLowerCase()}`);
+
+      if (!targetText) {
+        container.classList.remove('hidden');
+        container.innerHTML = `<span class="text-slate-400 italic">No dialogue target entered.</span>`;
+        badge.innerText = "Empty";
+        badge.className = "text-xs sm:text-sm font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200/60";
+        return;
+      }
+
+      const targetWords = targetText.split(/\s+/).filter(w => w);
+      const spokenWordsNormalized = spokenText.split(/[\s–—-]+/).map(w => normalizeForMatch(w)).filter(w => w);
+
+      let matchedCount = 0;
+      let spokenPointer = 0;
+      const htmlOutput = [];
+
+      for (let i = 0; i < targetWords.length; i++) {
+        const rawWord = targetWords[i];
+        const normalizedTarget = normalizeForMatch(rawWord);
+        const subTokens = normalizedTarget.split('-').map(t => t.trim()).filter(t => t);
+
+        let wordMatched = false;
+        let advancedPointerOffset = 0;
+        const lookaheadLimit = 15;
+
+        for (let j = spokenPointer; j < Math.min(spokenPointer + lookaheadLimit, spokenWordsNormalized.length); j++) {
+          let fillTarget = true;
+          for (let k = 0; k < subTokens.length; k++) {
+            if (j + k >= spokenWordsNormalized.length || spokenWordsNormalized[j + k] !== subTokens[k]) {
+              fillTarget = false;
+              break;
+            }
+          }
+          if (fillTarget) {
+            wordMatched = true;
+            advancedPointerOffset = (j - spokenPointer) + subTokens.length;
+            break;
+          }
+        }
+
+        if (!wordMatched) {
+          const firstToken = subTokens[0];
+          const foundIndex = spokenWordsNormalized.indexOf(firstToken, spokenPointer);
+          if (foundIndex !== -1 && (foundIndex - spokenPointer) < 25) {
+            let fillTarget = true;
+            for (let k = 0; k < subTokens.length; k++) {
+              if (foundIndex + k >= spokenWordsNormalized.length || spokenWordsNormalized[foundIndex + k] !== subTokens[k]) {
+                fillTarget = false;
+                break;
+              }
+            }
+            if (fillTarget) {
+              wordMatched = true;
+              advancedPointerOffset = (foundIndex - spokenPointer) + subTokens.length;
+            }
+          }
+        }
+
+        if (wordMatched) {
+          matchedCount++;
+          spokenPointer += advancedPointerOffset;
+          htmlOutput.push(`<span class="word-correct" title="Correct">${rawWord}</span>`);
+        } else {
+          htmlOutput.push(`<span class="word-missing" title="Missing/Mispronounced">${rawWord}</span>`);
+        }
+      }
+
+      container.classList.remove('hidden');
+      container.innerHTML = htmlOutput.join(' ');
+
+      const percentage = targetWords.length > 0 ? Math.round((matchedCount / targetWords.length) * 100) : 0;
+      sessionData[turn][role].score = percentage;
+
+      badge.innerText = `Accuracy: ${percentage}%`;
+      if (percentage >= 85) {
+        badge.className = "text-xs sm:text-sm font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm";
+      } else if (percentage >= 60) {
+        badge.className = "text-xs sm:text-sm font-bold px-3 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 shadow-sm";
+      } else {
+        badge.className = "text-xs sm:text-sm font-bold px-3 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 shadow-sm";
+      }
+
+      updateWorkspaceOverallDiagnosticKPIs();
+    }
+
+    function updateWorkspaceOverallDiagnosticKPIs() {
+      let total = 0;
+      let count = 0;
+      for (let t = 1; t <= 6; t++) {
+        if (sessionData[t]['A'].targetText) {
+          total += sessionData[t]['A'].score;
+          count++;
+        }
+        if (sessionData[t]['B'].targetText) {
+          total += sessionData[t]['B'].score;
+          count++;
+        }
+      }
+
+      const overall = count > 0 ? Math.round(total / count) : 0;
+      const statusPanel = document.getElementById('workspace-analytics-status');
+      if (statusPanel) {
+        statusPanel.innerText = count > 0 ? `${overall}% average` : "Unexamined";
+      }
+    }
+
+    async function compileAndRenderCombinedAudio() {
+      const mergedPlayer = document.getElementById('merged-audio-player');
+      const statusText = document.getElementById('merged-audio-status');
+      const dlBtn = document.getElementById('btn-download-combined');
+
+      mergedPlayer.classList.add('hidden');
+      if (dlBtn) dlBtn.classList.add('hidden');
+      statusText.innerText = "Analyzing turns and assembling audio buffers...";
+      statusText.className = "text-xs text-indigo-600 font-bold";
+
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const rawAudioBlobs = [];
+
+      for (let t = 1; t <= 6; t++) {
+        if (sessionData[t]['A'].audioBlob) rawAudioBlobs.push(sessionData[t]['A'].audioBlob);
+        if (sessionData[t]['B'].audioBlob) rawAudioBlobs.push(sessionData[t]['B'].audioBlob);
+      }
+
+      if (rawAudioBlobs.length === 0) {
+        statusText.innerText = "No recorded turns to combine. Record voice segments inside the workspace console to listen here!";
+        statusText.className = "text-xs text-slate-500 italic font-semibold";
+        return;
+      }
+
+      try {
+        statusText.innerText = `Decoding ${rawAudioBlobs.length} recorded segments...`;
+        
+        const decodedBuffers = [];
+        for (const blob of rawAudioBlobs) {
+          const arrayBuffer = await blob.arrayBuffer();
+          const decoded = await audioCtx.decodeAudioData(arrayBuffer);
+          decodedBuffers.push(decoded);
+        }
+
+        const targetSampleRate = decodedBuffers[0].sampleRate;
+        const targetChannels = 1; 
+        const gapDuration = 0.5; 
+
+        let totalDuration = 0;
+        decodedBuffers.forEach((buf, idx) => {
+          totalDuration += buf.duration;
+          if (idx < decodedBuffers.length - 1) totalDuration += gapDuration;
+        });
+
+        const totalSamples = Math.ceil(totalDuration * targetSampleRate);
+        const offlineCtx = new OfflineAudioContext(targetChannels, totalSamples, targetSampleRate);
+
+        let currentScheduleTime = 0;
+        decodedBuffers.forEach(buffer => {
+          const source = offlineCtx.createBufferSource();
+          source.buffer = buffer;
+          source.connect(offlineCtx.destination);
+          source.start(currentScheduleTime);
+          currentScheduleTime += buffer.duration + gapDuration;
+        });
+
+        statusText.innerText = "Processing dialogue stream. Rendering continuous dialogue WAV...";
+        const renderedBuffer = await offlineCtx.startRendering();
+
+        const wavBlob = audioBufferToWavBlob(renderedBuffer);
+        currentMergedAudioBlob = wavBlob; // Store for download access
+        const wavUrl = URL.createObjectURL(wavBlob);
+
+        mergedPlayer.src = wavUrl;
+        mergedPlayer.classList.remove('hidden');
+        if (dlBtn) dlBtn.classList.remove('hidden');
+
+        statusText.innerText = "Merged successfully! Continuous dialogue WAV ready.";
+        statusText.className = "text-xs text-emerald-700 font-bold";
+
+      } catch (err) {
+        console.error("Audio merger failure:", err);
+        statusText.innerText = "Audio merge failed. Ensure microphone clips are recorded and non-empty.";
+        statusText.className = "text-xs text-rose-600 font-semibold";
+      }
+    }
+
+    // Handles downloading the current session's combined dialogue WAV file
+    function downloadCombinedAudio() {
+      if (!currentMergedAudioBlob) return;
+      const url = URL.createObjectURL(currentMergedAudioBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `combined-dialogue-practice-${new Date().toISOString().slice(0,10)}.wav`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 100);
+    }
+
+    function audioBufferToWavBlob(buffer) {
+      const numOfChan = buffer.numberOfChannels;
+      const lclSampleRate = buffer.sampleRate;
+      const format = 1; 
+      const bitDepth = 16;
+      
+      let result;
+      if (numOfChan === 2) {
+        result = interleave(buffer.getChannelData(0), buffer.getChannelData(1));
+      } else {
+        result = buffer.getChannelData(0);
+      }
+      
+      const bufferLength = result.length * 2;
+      const arrayBuffer = new ArrayBuffer(44 + bufferLength);
+      const view = new DataView(arrayBuffer);
+      
+      writeString(view, 0, 'RIFF');
+      view.setUint32(4, 36 + bufferLength, true);
+      writeString(view, 8, 'WAVE');
+      
+      writeString(view, 12, 'fmt ');
+      view.setUint32(16, 16, true);
+      view.setUint16(20, format, true);
+      view.setUint16(22, numOfChan, true);
+      view.setUint32(24, lclSampleRate, true);
+      view.setUint32(28, lclSampleRate * numOfChan * (bitDepth / 8), true);
+      view.setUint16(32, numOfChan * (bitDepth / 8), true);
+      view.setUint16(34, bitDepth, true);
+      
+      writeString(view, 36, 'data');
+      view.setUint32(40, bufferLength, true);
+      
+      floatTo16BitPCM(view, 44, result);
+      
+      return new Blob([view], { type: 'audio/wav' });
+    }
+
+    function interleave(inputL, inputR) {
+      const length = inputL.length + inputR.length;
+      const result = new Float32Array(length);
+      let index = 0;
+      let inputIndex = 0;
+      while (index < length) {
+        result[index++] = inputL[inputIndex];
+        result[index++] = inputR[inputIndex];
+        inputIndex++;
+      }
+      return result;
+    }
+
+    function floatTo16BitPCM(output, offset, input) {
+      for (let i = 0; i < input.length; i++, offset += 2) {
+        let s = Math.max(-1, Math.min(1, input[i]));
+        output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+      }
+    }
+
+    function writeString(view, offset, string) {
+      for (let i = 0; i < string.length; i++) {
+        view.setUint8(offset + i, string.charCodeAt(i));
+      }
+    }
+
+    function getMockDialogue(topic) {
+      return [
+        { "turn": 1, "roleA": `Hello! I'm calling about the reservation for the ${topic || 'weekend travel'}.`, "roleB": `Good afternoon! I would be absolutely delighted to assist you with your ${topic || 'booking details'}.` },
+        { "turn": 2, "roleA": `Excellent. Could you please confirm if we have the standard UK breakfast included?`, "roleB": `Let me verify that record. Yes, full English breakfast serves daily starting from seven o'clock.` },
+        { "turn": 3, "roleA": `Perfect. Also, does our premium package provide access to the complimentary workspace lounge?`, "roleB": `Absolutely. You have unlimited twenty-four-hour access throughout your entire duration.` },
+        { "turn": 4, "roleA": `That is great news. I will definitely utilize that space for my business meetings.`, "roleB": `We also have high-speed private boardrooms available should you require more formal arrangements.` },
+        { "turn": 5, "roleA": `Wonderful, thank you very much for your outstanding service and assistance.`, "roleB": `You are most welcome. It is our absolute pleasure to assist with your preparations today.` },
+        { "turn": 6, "roleA": `Great, see you soon at the check-in counter. Goodbye!`, "roleB": `We look forward to welcoming you soon. Have a very pleasant and safe journey. Goodbye!` }
+      ];
+    }
+
+    async function generateAIScript() {
+      const promptInput = document.getElementById('ai-prompt-input');
+      const topic = promptInput.value.trim();
+      const btnText = document.getElementById('ai-btn-text');
+      const btnSpinner = document.getElementById('ai-btn-spinner');
+      const genBtn = document.getElementById('btn-generate-ai');
+
+      if (!topic) return;
+
+      genBtn.disabled = true;
+      if (btnText) btnText.innerText = "Consulting Gemini AI...";
+      if (btnSpinner) btnSpinner.classList.remove('hidden');
+
+      const systemPrompt = "You are a friendly EFL/ESL dialog author. Generate exactly 6 dialogue turns for standard oral exercises. Each turn has exactly one short, natural sentence for Role A and one for Role B. Keep wording easy and direct, appropriate for Secondary 4 students (15-16 years old).";
+      const userPrompt = `Generate a 6-turn dialogue on the topic of: "${topic}".`;
+      const apiKey = ""; 
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const payload = {
+        contents: [{ parts: [{ text: userPrompt }] }],
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "ARRAY",
+            items: {
+              type: "OBJECT",
+              properties: {
+                "turn": { "type": "NUMBER" },
+                "roleA": { "type": "STRING" },
+                "roleB": { "type": "STRING" }
+              },
+              required: ["turn", "roleA", "roleB"]
+            }
+          }
+        },
+        systemInstruction: {
+          parts: [{ text: systemPrompt }]
+        }
+      };
+
+      let delay = 1000;
+      let success = false;
+      let responseData = null;
+
+      for (let retries = 0; retries < 3; retries++) {
+        try {
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          
+          if (response.ok) {
+            responseData = await response.json();
+            success = true;
+            break;
+          }
+        } catch (e) {}
+        await new Promise(res => setTimeout(res, delay));
+        delay *= 2;
+      }
+
+      let parsedTurns = null;
+
+      if (success && responseData) {
+        try {
+          const jsonText = responseData.candidates[0].content.parts[0].text;
+          parsedTurns = JSON.parse(jsonText);
+        } catch (parseError) {
+          console.warn("Fallback invoked", parseError);
+        }
+      }
+
+      if (!parsedTurns) {
+        parsedTurns = getMockDialogue(topic);
+      }
+
+      parsedTurns.forEach(item => {
+        const t = item.turn;
+        if (t >= 1 && t <= 6) {
+          const inputA = document.getElementById(`input-turn-${t}-a`);
+          const inputB = document.getElementById(`input-turn-${t}-b`);
+          
+          if (inputA && inputB) {
+            inputA.value = item.roleA;
+            inputB.value = item.roleB;
+            
+            sessionData[t]['A'].targetText = item.roleA;
+            sessionData[t]['B'].targetText = item.roleB;
+          }
+        }
+      });
+
+      // Reset badge evaluations to unexamined
+      for (let t = 1; t <= 6; t++) {
+        const badgeA = document.getElementById(`turn-${t}-a-badge`);
+        const badgeB = document.getElementById(`turn-${t}-b-badge`);
+        if (badgeA) {
+          badgeA.innerText = "Unexamined";
+          badgeA.className = "text-xs sm:text-sm font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200/60 shadow-sm";
+        }
+        if (badgeB) {
+          badgeB.innerText = "Unexamined";
+          badgeB.className = "text-xs sm:text-sm font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 border border-slate-200/60 shadow-sm";
+        }
+        const feedA = document.getElementById(`feedback-turn-${t}-a`);
+        const feedB = document.getElementById(`feedback-turn-${t}-b`);
+        if (feedA) feedA.classList.add('hidden');
+        if (feedB) feedB.classList.add('hidden');
+
+        // Redraw action bars
+        renderActionBar(t, 'A');
+        renderActionBar(t, 'B');
+      }
+
+      const reportView = document.getElementById('report-view');
+      if (reportView) reportView.classList.add('hidden');
+      promptInput.value = "";
+      
+      updateInteractiveProgressMarkers();
+
+      genBtn.disabled = false;
+      if (btnText) btnText.innerText = "Generate Dialogue Script";
+      if (btnSpinner) btnSpinner.classList.add('hidden');
+    }
+
+    function getMockCoaching() {
+      return `
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: #a5b4fc; margin-bottom: 0.75rem;">Great Job Practising! Here is your friendly coaching tip:</h3>
+        <p style="margin-bottom: 1rem;">You did an amazing job reading through the sentences. Here are some simple, practical tips to help you sound even more natural and clear:</p>
+        <ul style="list-style-type: disc; padding-left: 1.5rem; space-y: 0.5rem; margin-bottom: 1rem;">
+          <li><strong>Watch Your Swapping Sounds:</strong> In words like <em>reservation</em> or <em>English</em>, try not to rush. Keep your tongue steady and let each syllable sound out fully!</li>
+          <li><strong>Rhythm & Pacing:</strong> When saying short phrases like <em>"I'm calling"</em>, read them together as a single smooth unit rather than isolated words.</li>
+          <li><strong>Open Vowel Practice:</strong> Make sure words containing 'a' or 'o' (like <em>lounge</em> and <em>lately</em>) sound nice, wide, and clear.</li>
+        </ul>
+        <h4 style="font-size: 1.05rem; font-weight: 700; color: #818cf8; margin-top: 1.25rem; margin-bottom: 0.5rem;">Recommended Remedial Practice Drill:</h4>
+        <p>Listen to each recommended drill card word below. Practice saying them out loud 3 times. Try starting slowly, then read at standard conversational speed.</p>
+      `;
+    }
+
+    async function generateAICoaching() {
+      const coachBtn = document.getElementById('btn-run-ai-coach');
+      const coachText = document.getElementById('ai-coach-btn-text');
+      const coachSpinner = document.getElementById('ai-coach-spinner');
+      const outputCard = document.getElementById('ai-coaching-output-card');
+      const textDiv = document.getElementById('ai-coaching-text-content');
+
+      coachBtn.disabled = true;
+      if (coachText) coachText.innerText = "Analyzing Phonetics...";
+      if (coachSpinner) coachSpinner.classList.remove('hidden');
+
+      let datasetPrompt = "COMPARE THE TARGET DIALOGUE WITH THE SPOKEN SCRIPT AND AUDIT FOR COMPREHENSION:\n\n";
+      for (let t = 1; t <= 6; t++) {
+        datasetPrompt += `TURN ${t}:\n`;
+        datasetPrompt += `  Target Role A: "${sessionData[t]['A'].targetText || ''}"\n`;
+        datasetPrompt += `  Spoken Role A: "${sessionData[t]['A'].actualTranscript || ''}"\n`;
+        datasetPrompt += `  Target Role B: "${sessionData[t]['B'].targetText || ''}"\n`;
+        datasetPrompt += `  Spoken Role B: "${sessionData[t]['B'].actualTranscript || ''}"\n\n`;
+      }
+
+      const systemPrompt = "You are a friendly, encouraging high-school oral English tutor. Evaluate the given list of target vs. spoken transcripts. Spot key trends of phonetic pronunciation or sound swapping (e.g. swapping letters, word stresses) for both Role A and Role B. Formulate simple, fun, easy-to-understand tips in friendly English suitable for Secondary 4 students (15-16 years old). Avoid complicated phonetic jargon. Respond using clean HTML formatting elements (e.g. <h3>, <p>, <ul>, <li>) with clear and beautiful inline styling.";
+      const apiKey = "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+      const payload = {
+        contents: [{ parts: [{ text: datasetPrompt }] }],
+        systemInstruction: {
+          parts: [{ text: systemPrompt }]
+        }
+      };
+
+      let delay = 1000;
+      let success = false;
+      let responseData = null;
+
+      for (let retries = 0; retries < 3; retries++) {
+        try {
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          
+          if (response.ok) {
+            responseData = await response.json();
+            success = true;
+            break;
+          }
+        } catch (e) {}
+        await new Promise(res => setTimeout(res, delay));
+        delay *= 2;
+      }
+
+      let coachingHtmlText = null;
+
+      if (success && responseData) {
+        try {
+          coachingHtmlText = responseData.candidates[0].content.parts[0].text;
+        } catch (err) {
+          console.warn("Coach panel parser error, invoking default text.", err);
+        }
+      }
+
+      if (!coachingHtmlText) {
+        coachingHtmlText = getMockCoaching();
+      }
+
+      if (outputCard) outputCard.classList.remove('hidden');
+      if (textDiv) textDiv.innerHTML = coachingHtmlText;
+      if (outputCard) outputCard.scrollIntoView({ behavior: 'smooth' });
+
+      coachBtn.disabled = false;
+      if (coachText) coachText.innerText = "Run Deep AI Evaluation";
+      if (coachSpinner) coachSpinner.classList.add('hidden');
+    }
+
+    function generateCumulativeReport(saveToCloud = true) {
+      for (let t = 1; t <= 6; t++) {
+        runTurnAnalysis(t, 'A');
+        runTurnAnalysis(t, 'B');
+      }
+
+      let totalScoreA = 0;
+      let countA = 0;
+      let totalScoreB = 0;
+      let countB = 0;
+
+      for (let t = 1; t <= 6; t++) {
+        if (sessionData[t]['A'].targetText) {
+          totalScoreA += sessionData[t]['A'].score;
+          countA++;
+        }
+        if (sessionData[t]['B'].targetText) {
+          totalScoreB += sessionData[t]['B'].score;
+          countB++;
+        }
+      }
+
+      const finalScoreA = countA > 0 ? Math.round(totalScoreA / countA) : 0;
+      const finalScoreB = countB > 0 ? Math.round(totalScoreB / countB) : 0;
+
+      document.getElementById('role-a-gauge').innerText = `${finalScoreA}%`;
+      document.getElementById('role-b-gauge').innerText = `${finalScoreB}%`;
+
+      const circumference = 301.6; 
+      const circleA = document.getElementById('role-a-circle');
+      if (circleA) {
+        const offsetA = circumference - (finalScoreA / 100) * circumference;
+        circleA.style.strokeDashoffset = offsetA;
+      }
+      const circleB = document.getElementById('role-b-circle');
+      if (circleB) {
+        const offsetB = circumference - (finalScoreB / 100) * circumference;
+        circleB.style.strokeDashoffset = offsetB;
+      }
+
+      document.getElementById('role-a-summary-text').innerText = getSummaryEvaluatorText(finalScoreA);
+      document.getElementById('role-b-summary-text').innerText = getSummaryEvaluatorText(finalScoreB);
+
+      renderProgressionTimeline();
+      populateDrillList('A');
+      populateDrillList('B');
+
+      const workspace = document.getElementById('lab-workspace-view');
+      const reportView = document.getElementById('report-view');
+      
+      workspace.classList.add('hidden');
+      reportView.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      compileAndRenderCombinedAudio();
+
+      if (saveToCloud && typeof window.savePerformanceReport === 'function') {
+        window.savePerformanceReport(finalScoreA, finalScoreB);
+      }
+    }
+
+    function renderProgressionTimeline() {
+      const container = document.getElementById('report-progression-timeline');
+      if (!container) return;
+      container.innerHTML = "";
+      for (let t = 1; t <= 6; t++) {
+        const scoreA = sessionData[t]['A'].score;
+        const scoreB = sessionData[t]['B'].score;
+        const hasA = sessionData[t]['A'].targetText.trim() !== "";
+        const hasB = sessionData[t]['B'].targetText.trim() !== "";
+        
+        if (!hasA && !hasB) continue;
+
+        const row = document.createElement('div');
+        row.className = "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-3 border-b border-indigo-50/50 last:border-none";
+        row.innerHTML = `
+          <div class="shrink-0">
+            <span class="text-xs font-bold text-indigo-900 bg-indigo-50 px-2.5 py-1 rounded-full uppercase tracking-wider">Turn ${t}</span>
+          </div>
+          <div class="flex-grow w-full space-y-2">
+            <!-- Speaker A Progress bar -->
+            ${hasA ? `
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-bold text-violet-700 w-16">Role A:</span>
+              <div class="flex-grow h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-full bg-violet-600 rounded-full transition-all duration-500" style="width: ${scoreA}%"></div>
+              </div>
+              <span class="text-xs font-extrabold text-slate-800 w-8 text-right">${scoreA}%</span>
+            </div>
+            ` : ''}
+            <!-- Speaker B Progress bar -->
+            ${hasB ? `
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-bold text-emerald-700 w-16">Role B:</span>
+              <div class="flex-grow h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                <div class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: ${scoreB}%"></div>
+              </div>
+              <span class="text-xs font-extrabold text-slate-800 w-8 text-right">${scoreB}%</span>
+            </div>
+            ` : ''}
+          </div>
+        `;
+        container.appendChild(row);
+      }
+    }
+
+    function getSummaryEvaluatorText(score) {
+      if (score >= 90) return "Excellent pronunciation and rhythm matching. Highly fluent execution.";
+      if (score >= 75) return "Very good clarity with standard pauses. Minor accuracy mismatch.";
+      if (score >= 50) return "Modest clarity levels. Practice isolated phonetic modules to reinforce enunciation.";
+      return "Substantial mispronunciations detected. Standardize articulation via targeted speech drills below.";
+    }
+
+    function populateDrillList(role) {
+      const container = document.getElementById(`role-${role.toLowerCase()}-drills-list`);
+      container.innerHTML = "";
+
+      let mispronouncedWords = [];
+      let standardWords = [];
+
+      for (let t = 1; t <= 6; t++) {
+        const target = sessionData[t][role].targetText;
+        const spoken = sessionData[t][role].actualTranscript;
+
+        if (!target) continue;
+
+        const targetWords = target.split(/\s+/).filter(w => w);
+        const spokenWordsNormalized = spoken.split(/[\s–—-]+/).map(w => normalizeForMatch(w)).filter(w => w);
+
+        let spokenPointer = 0;
+
+        for (let i = 0; i < targetWords.length; i++) {
+          const rawWord = targetWords[i];
+          const normalizedTarget = normalizeForMatch(rawWord);
+          if (!normalizedTarget) continue;
+
+          const subTokens = normalizedTarget.split('-').map(t => t.trim()).filter(t => t);
+          let wordMatched = false;
+          let advancedPointerOffset = 0;
+          const lookaheadLimit = 15;
+
+          for (let j = spokenPointer; j < Math.min(spokenPointer + lookaheadLimit, spokenWordsNormalized.length); j++) {
+            let fillTarget = true;
+            for (let k = 0; k < subTokens.length; k++) {
+              if (j + k >= spokenWordsNormalized.length || spokenWordsNormalized[j + k] !== subTokens[k]) {
+                fillTarget = false;
+                break;
+              }
+            }
+            if (fillTarget) {
+              wordMatched = true;
+              advancedPointerOffset = (j - spokenPointer) + subTokens.length;
+              break;
+            }
+          }
+
+          if (!wordMatched) {
+            const firstToken = subTokens[0];
+            const foundIndex = spokenWordsNormalized.indexOf(firstToken, spokenPointer);
+            if (foundIndex !== -1 && (foundIndex - spokenPointer) < 25) {
+              let fillTarget = true;
+              for (let k = 0; k < subTokens.length; k++) {
+                if (foundIndex + k >= spokenWordsNormalized.length || spokenWordsNormalized[foundIndex + k] !== subTokens[k]) {
+                  fillTarget = false;
+                  break;
+                }
+              }
+              if (fillTarget) {
+                wordMatched = true;
+                advancedPointerOffset = (foundIndex - spokenPointer) + subTokens.length;
+              }
+            }
+          }
+
+          if (!wordMatched) {
+            subTokens.forEach(token => {
+              if (!mispronouncedWords.includes(token)) mispronouncedWords.push(token);
+            });
+          } else {
+            spokenPointer += advancedPointerOffset;
+            subTokens.forEach(token => {
+              if (!standardWords.includes(token)) standardWords.push(token);
+            });
+          }
+        }
+      }
+
+      let mergedPracticeList = [...mispronouncedWords];
+      standardWords.sort((a, b) => b.length - a.length);
+
+      let idx = 0;
+      while (mergedPracticeList.length < 5 && idx < standardWords.length) {
+        const potentialWord = standardWords[idx];
+        if (!mergedPracticeList.includes(potentialWord)) mergedPracticeList.push(potentialWord);
+        idx++;
+      }
+
+      const fallbacks = ["reservation", "english", "departure", "lounge", "complimentary", "workspace", " Heathrow"];
+      let fallbackIdx = 0;
+      while (mergedPracticeList.length < 5) {
+        const defaultWord = fallbacks[fallbackIdx % fallbacks.length];
+        if (!mergedPracticeList.includes(defaultWord)) mergedPracticeList.push(defaultWord);
+        fallbackIdx++;
+      }
+
+      const recommendedSlice = mergedPracticeList.slice(0, 6);
+
+      recommendedSlice.forEach(word => {
+        const btn = document.createElement('button');
+        btn.onclick = () => speakUK(word);
+        btn.className = "flex items-center gap-2 py-3 px-4 bg-white border border-slate-200 hover:border-violet-500 hover:bg-violet-50 text-slate-800 hover:text-violet-700 text-sm font-bold rounded-xl shadow-sm transition transform hover:-translate-y-0.5 active:translate-y-0";
+        btn.style.cursor = "pointer !important";
+        btn.innerHTML = `
+          <svg class="w-4 h-4 shrink-0 transition-colors ${role === 'A' ? 'text-violet-500' : 'text-emerald-500'}" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+          </svg>
+          <span class="tracking-tight font-sans font-bold">${word}</span>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    function initializeUKVoice() {
+      if ('speechSynthesis' in window) {
+        const cacheVoices = () => {
+          const voices = window.speechSynthesis.getVoices();
+          ukSpeechVoice = voices.find(voice => 
+            voice.lang.includes('en-GB') || 
+            voice.name.toLowerCase().includes('united kingdom') || 
+            voice.name.toLowerCase().includes('british') || 
+            voice.name.toLowerCase().includes('uk')
+          );
+        };
+
+        cacheVoices();
+        if (window.speechSynthesis.onvoiceschanged !== undefined) {
+          window.speechSynthesis.onvoiceschanged = cacheVoices;
+        }
+      }
+    }
+
+    function speakUK(word, rate = 0.85) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(word);
+        if (ukSpeechVoice) {
+          utterance.voice = ukSpeechVoice;
+        } else {
+          utterance.lang = 'en-GB'; 
+        }
+        utterance.rate = rate;
+        window.speechSynthesis.speak(utterance);
+      } else {
+        console.warn("Speech Synthesis engine is not supported by your client browser.");
+      }
+    }
+
+    function checkSpeechRecognitionSupport() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        const warning = document.getElementById('browser-warning');
+        warning.classList.remove('hidden');
+      }
+    }
+
+    // Explicit window reference bindings to secure functional integrity inside isolation frames
+    window.activateMicTest = activateMicTest;
+    window.toggleLoopbackState = toggleLoopbackState;
+    window.enterPracticeLab = enterPracticeLab;
+    window.exitToWelcome = exitToWelcome;
+    window.returnToWorkspace = returnToWorkspace;
+    window.generateAIScript = generateAIScript;
+    window.generateAICoaching = generateAICoaching;
+    window.clearAllTurns = clearAllTurns;
+    window.playbackTurnAudio = playbackTurnAudio;
+    window.runTurnAnalysis = runTurnAnalysis;
+    window.clearTranscriptOnly = clearTranscriptOnly;
+    window.speakTargetText = speakTargetText;
+    window.generateCumulativeReport = generateCumulativeReport;
+    window.downloadCombinedAudio = downloadCombinedAudio;
+
+    window.handleRecordClick = handleRecordClick;
+    window.handlePauseClick = handlePauseClick;
+    window.handleResumeClick = handleResumeClick;
+    window.handleStopClick = handleStopClick;
+    window.stopGlobalSession = stopGlobalSession;
+  </script>
+</body>
+</html>
